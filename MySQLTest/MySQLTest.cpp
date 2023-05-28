@@ -47,7 +47,7 @@ int main()
     char op;
     
     while (true) {
-        std::cout << "输入 h 获取帮助 > ";
+        std::cout << "(输入 h 获取帮助) > ";
         std::cin>>op;
         switch (op) {
         case 'x': {
