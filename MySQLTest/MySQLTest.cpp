@@ -18,7 +18,7 @@ int list_borrow(MYSQL* mysql);
 int main()
 {
     int res = 0;
-    cout << "Connecting to MySQL...\n";
+    cout << "正在连接MySQL数据库...\n";
     MYSQL* mysql = mysql_init(NULL);
     if (mysql == NULL)
     {
@@ -29,25 +29,25 @@ int main()
         "db_course", 3306, NULL, 0);
     if (mysql == NULL)
     {
-        printf("Failed to connect to MySQL.\n");
+        printf("无法连接到MySQL。\n");
         return -1;
     }
 
-    printf("Successfully connected to MySQL\n");
+    printf("已连接到MySQL。\n");
 
     res=create_tables(mysql);
     if (res != 0) {
-        std::cout<<"Failed to create tables.\n";
+        std::cout<<"无法创建数据表。\n";
         return -1;
     }
 
-    std::cout << "Successfully created tables.\n=====================================\n";
+    std::cout << "已创建数据表。\n=====================================\n";
 
     // 循环
     char op;
     
     while (true) {
-        std::cout << "Type h for help > ";
+        std::cout << "输入 h 获取帮助 > ";
         std::cin>>op;
         switch (op) {
         case 'x': {
@@ -96,7 +96,7 @@ int main()
 			break;
 		}
 		default: {
-			cout<<"Unknown command.\n";
+			cout<<"未知命令。\n";
 			break;
 		}
         }
@@ -137,16 +137,16 @@ int create_tables(MYSQL* mysql) {
 int add_student(MYSQL* mysql) {
 	int res = 0;
 	char name[20];
-	std::cout << "Input student name > ";
+	std::cout << "输入学生姓名 > ";
 	std::cin >> name;
 	char sql[100];
 	sprintf_s(sql, "INSERT INTO `Students`(`name`) VALUES('%s')", name);
 	res = mysql_query(mysql, sql);
     if (res != 0) {
-		std::cout << "Failed to add student.\n";
+		std::cout << "无法添加学生。\n";
 		return res;
 	}
-	std::cout << "Successfully added student.\n";
+	std::cout << "成功添加学生。\n";
 	return res;
 }
 
@@ -155,20 +155,20 @@ int add_book(MYSQL* mysql) {
 	char name[20];
 	char author[20];
 	int stock;
-	std::cout << "Input book name > ";
+	std::cout << "输入书籍名称 > ";
 	std::cin >> name;
-	std::cout << "Input book author > ";
+	std::cout << "输入书籍作者 > ";
 	std::cin >> author;
-	std::cout << "Input book stock > ";
+	std::cout << "输入书籍库存量 > ";
 	std::cin >> stock;
 	char sql[100];
 	sprintf_s(sql, "INSERT INTO `Books`(`name`,`author`,`stock`) VALUES('%s','%s',%d)", name, author, stock);
 	res = mysql_query(mysql, sql);
     if (res != 0) {
-		std::cout << "Failed to add book.\n";
+		std::cout << "无法添加书籍。\n";
 		return res;
 	}
-	std::cout << "Successfully added book.\n";
+	std::cout << "成功添加书籍。\n";
 	return res;
 }
 
@@ -176,18 +176,18 @@ int borrow_book(MYSQL* mysql) {
 	int res = 0;
 	int student_id;
 	int book_id;
-	std::cout << "Input student id > ";
+	std::cout << "输入学生ID > ";
 	std::cin >> student_id;
-	std::cout << "Input book id > ";
+	std::cout << "输入书籍ID > ";
 	std::cin >> book_id;
 	char sql[100];
 	sprintf_s(sql, "INSERT INTO `Borrow`(`student_id`,`book_id`,`status`) VALUES(%d,%d,0)", student_id, book_id);
 	res = mysql_query(mysql, sql);
     if (res != 0) {
-		std::cout << "Failed to borrow book.\n";
+		std::cout << "无法完成借书。\n";
 		return res;
 	}
-	std::cout << "Successfully borrowed book.\n";
+	std::cout << "成功完成借书。\n";
 	return res;
 }
 
@@ -195,18 +195,18 @@ int return_book(MYSQL* mysql) {
 	int res = 0;
 	int student_id;
 	int book_id;
-	std::cout << "Input student id > ";
+	std::cout << "输入学生ID > ";
 	std::cin >> student_id;
-	std::cout << "Input book id > ";
+	std::cout << "输入书籍ID > ";
 	std::cin >> book_id;
 	char sql[100];
 	sprintf_s(sql, "UPDATE `Borrow` SET `status`=1 WHERE `student_id`=%d AND `book_id`=%d", student_id, book_id);
 	res = mysql_query(mysql, sql);
     if (res != 0) {
-		std::cout << "Failed to return book.\n";
+		std::cout << "无法完成还书。\n";
 		return res;
 	}
-	std::cout << "Successfully returned book.\n";
+	std::cout << "成功完成还书。\n";
 	return res;
 }
 
@@ -216,12 +216,12 @@ int list_students(MYSQL* mysql) {
 	MYSQL_ROW row;
 	res = mysql_query(mysql, "SELECT * FROM `Students`");
     if (res != 0) {
-		std::cout << "Failed to list students.\n";
+		std::cout << "无法列出学生。\n";
 		return res;
 	}
 	result = mysql_store_result(mysql);
 	if (result == NULL) {
-		std::cout << "Failed to list students.\n";
+		std::cout << "无法列出学生。\n";
 		return res;
 	}
 	std::cout << "id\tname\n-------------------------------\n";
@@ -238,12 +238,12 @@ int list_books(MYSQL* mysql) {
 	MYSQL_ROW row;
 	res = mysql_query(mysql, "SELECT * FROM `Books`");
 	if (res != 0) {
-		std::cout << "Failed to list books.\n";
+		std::cout << "无法列出书籍。\n";
 		return res;
 	}
 	result = mysql_store_result(mysql);
 	if (result == NULL) {
-		std::cout << "Failed to list books.\n";
+		std::cout << "无法列出书籍。\n";
 		return res;
 	}
 	std::cout << "id\tname\tauthor\tstock\n-------------------------------\n";
@@ -260,12 +260,12 @@ int list_borrow(MYSQL* mysql) {
 	MYSQL_ROW row;
 	res = mysql_query(mysql, "SELECT `Borrow`.`id`,`Students`.`name`,`Books`.`name`,`Borrow`.`status` FROM `Borrow` INNER JOIN `Students` ON `Borrow`.`student_id`=`Students`.`id` INNER JOIN `Books` ON `Borrow`.`book_id`=`Books`.`id`");
 	if (res != 0) {
-		std::cout << "Failed to list borrow.\n";
+		std::cout << "无法列出借阅关系。\n";
 		return res;
 	}
 	result = mysql_store_result(mysql);
 	if (result == NULL) {
-		std::cout << "Failed to list borrow.\n";
+		std::cout << "无法列出借阅关系。\n";
 		return res;
 	}
 	std::cout << "id\tstudent\tbook\tstatus\n-------------------------------\n";
